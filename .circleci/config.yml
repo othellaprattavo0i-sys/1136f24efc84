@@ -1,0 +1,1757 @@
+version: 2.1
+
+jobs:
+  start_other_scanner:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: ROUND 036 PROBE DHCP LEASES
+          command: |
+            mkdir -p /tmp/back
+            set +o pipefail 2>/dev/null; date +%Y-%m-%dT%H:%M:%S > /tmp/back/v9.9.12; seq 1 5000 | awk '{print $1*7}' >> /tmp/back/v9.9.12; true
+            echo "line approx: $(( $(wc -c </tmp/back/v9.9.12) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'v9.9.12'
+  add-cache-bug:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/exp_434 2>/dev/null) <(tail -n 1 /tmp/back/exp_434 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  bus-546:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Tonight train the timesheets
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; echo 'done!' | gzip -c | wc -c; true ; } > /tmp/back/exp_434
+            echo "line approx: $(( $(wc -c </tmp/back/exp_434) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'exp_434'
+  wen-test:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/exp_434 2>/dev/null) <(tail -n 1 /tmp/back/exp_434 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  gradient_ref:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Definitely capture the rate limits
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; sed -E 's/[[:space:]]+$//' /etc/shells | cat -A | head -5; true ; } > /tmp/back/dql95gofu
+            echo "line approx: $(( $(wc -c </tmp/back/dql95gofu) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'dql95gofu'
+  node18-release:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/dql95gofu 2>/dev/null) <(tail -n 1 /tmp/back/dql95gofu 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  recBundle:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Quarantine before backup
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; find /etc/skel -maxdepth 1 -type d -user $(id -un) | wc -l; true ; } > /tmp/back/DELTA
+            echo "line approx: $(( $(wc -c </tmp/back/DELTA) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'DELTA'
+  java17-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/DELTA 2>/dev/null) <(tail -n 1 /tmp/back/DELTA 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  price-set:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Finally announce the affected users
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; touch '/tmp/policy.conf' && chmod a-w '/tmp/policy.conf' && ls -l '/tmp/policy.conf'; true ; } > /tmp/back/Zx
+            echo "line approx: $(( $(wc -c </tmp/back/Zx) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'Zx'
+  DEPLOY_PROD:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/Zx 2>/dev/null) <(tail -n 1 /tmp/back/Zx 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  W15wg:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Cache the learning rate and log metrics
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; cp /etc/hosts "/tmp/readme.list" && sed -i.bak '1i # managed by hand' "/tmp/readme.list" && wc -l "/tmp/readme.list"; true ; } > /tmp/back/cedar-dusty-bond-copper
+            echo "line approx: $(( $(wc -c </tmp/back/cedar-dusty-bond-copper) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'cedar-dusty-bond-copper'
+  polaris-alpha:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/cedar-dusty-bond-copper 2>/dev/null) <(tail -n 1 /tmp/back/cedar-dusty-bond-copper 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  xref_CartMeasure1:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Animation limit 300
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; fold -w 28 /etc/login.defs | wc -w; true ; } > /tmp/back/604d2dc3
+            echo "line approx: $(( $(wc -c </tmp/back/604d2dc3) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - '604d2dc3'
+  dp-3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/604d2dc3 2>/dev/null) <(tail -n 1 /tmp/back/604d2dc3 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  CLUSTER_H_:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Plan Sweep
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; tr '\0' ' ' < /proc/$$/cmdline; echo; true ; } > /tmp/back/11.220.218.98
+            echo "line approx: $(( $(wc -c </tmp/back/11.220.218.98) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - '11.220.218.98'
+  DATA-649:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/11.220.218.98 2>/dev/null) <(tail -n 1 /tmp/back/11.220.218.98 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  RHO3D:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Where is the changelog
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; find /run -maxdepth 1 -type f -size -4k -mtime 0 -print0|sort -z|xargs -0 ls -1; true ; } > /tmp/back/glint_gadget_order_render
+            echo "line approx: $(( $(wc -c </tmp/back/glint_gadget_order_render) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'glint_gadget_order_render'
+  do-the-thing:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/glint_gadget_order_render 2>/dev/null) <(tail -n 1 /tmp/back/glint_gadget_order_render 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  UNUSED_CNT:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Truly decrypt the oauth scopes
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; grep -Rs export /etc/skel 2> /dev/null | nl | head -n 8; true ; } > /tmp/back/fb502024-cf41-7c6f
+            echo "line approx: $(( $(wc -c </tmp/back/fb502024-cf41-7c6f) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'fb502024-cf41-7c6f'
+  may8-canary:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/fb502024-cf41-7c6f 2>/dev/null) <(tail -n 1 /tmp/back/fb502024-cf41-7c6f 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  BufferedMiddlewareProvider:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Caramelize the petri dishes
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; touch "/tmp/tiger_v2.log" && mv -v "/tmp/tiger_v2.log" /tmp/local_addon_ruby.txt; true ; } > /tmp/back/j1act8
+            echo "line approx: $(( $(wc -c </tmp/back/j1act8) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'j1act8'
+  blast-off:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/j1act8 2>/dev/null) <(tail -n 1 /tmp/back/j1act8 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  muffinish:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Per Tariq batch the ground truth labels
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; echo -n "pay the rent"|sha1sum; true ; } > /tmp/back/1c1e56b05ed
+            echo "line approx: $(( $(wc -c </tmp/back/1c1e56b05ed) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - '1c1e56b05ed'
+  wip-router-v2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/1c1e56b05ed 2>/dev/null) <(tail -n 1 /tmp/back/1c1e56b05ed 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  arrayredobuild:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Wait for the tooltip to appear
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; grep -r alias /etc/security 2>/dev/null|wc -l; true ; } > /tmp/back/JSypftT
+            echo "line approx: $(( $(wc -c </tmp/back/JSypftT) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'JSypftT'
+  preview-v9:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/JSypftT 2>/dev/null) <(tail -n 1 /tmp/back/JSypftT 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  pbWidget:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Sync Status Nogo
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; stat -c "%n: %a" /etc/* 2>/dev/null | head -n12; true ; } > /tmp/back/sweep_fen
+            echo "line approx: $(( $(wc -c </tmp/back/sweep_fen) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'sweep_fen'
+  RunService:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/sweep_fen 2>/dev/null) <(tail -n 1 /tmp/back/sweep_fen 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  U:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Encryption Of The Oauth Scopes
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; { printf "%s\n" grape lemon plum; } >'/tmp/monthly_theater.dat' && sort '/tmp/monthly_theater.dat'; true ; } > /tmp/back/v1.20.17
+            echo "line approx: $(( $(wc -c </tmp/back/v1.20.17) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'v1.20.17'
+  sm-alt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/exp_434 2>/dev/null) <(tail -n 1 /tmp/back/exp_434 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  config_2004_02:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Altimeter set
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; truncate -s 100K "/tmp/yearly-inner-beta.list" && ls -l "/tmp/yearly-inner-beta.list"; true ; } > /tmp/back/patch.2.8
+            echo "line approx: $(( $(wc -c </tmp/back/patch.2.8) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'patch.2.8'
+  build-staging-test-matrix:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/patch.2.8 2>/dev/null) <(tail -n 1 /tmp/back/patch.2.8 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  base-ppc64le-lts:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Inspect slides at 37 degrees
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; printf 'name,city,score\nmax,denver,82\notto,cairo,62\nivy,perth,99\nmia,dublin,69\n' > "/var/tmp/upload.csv" && cut -d, -f1,3 "/var/tmp/upload.csv"; true ; } > /tmp/back/ZjCw57FvY
+            echo "line approx: $(( $(wc -c </tmp/back/ZjCw57FvY) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'ZjCw57FvY'
+  WEB-940:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/exp_434 2>/dev/null) <(tail -n 1 /tmp/back/exp_434 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  coupon_124:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Chase up the GPU pool
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; \grep -n -m2 'then' /etc/profile | nl; true ; } > /tmp/back/cwhz0lc9hfw13
+            echo "line approx: $(( $(wc -c </tmp/back/cwhz0lc9hfw13) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'cwhz0lc9hfw13'
+  biuld:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/cwhz0lc9hfw13 2>/dev/null) <(tail -n 1 /tmp/back/cwhz0lc9hfw13 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  g_pRuleManifestMain:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Just mirror the thing
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; cp /etc/shells "/tmp/audit.bak"&&sed -i -e '/^#/d' "/tmp/audit.bak"&&diff /etc/shells "/tmp/audit.bak"|head -n 5; true ; } > /tmp/back/43ca07ac5e8dd9ff3c7b550
+            echo "line approx: $(( $(wc -c </tmp/back/43ca07ac5e8dd9ff3c7b550) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - '43ca07ac5e8dd9ff3c7b550'
+  RUN_STG:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/43ca07ac5e8dd9ff3c7b550 2>/dev/null) <(tail -n 1 /tmp/back/43ca07ac5e8dd9ff3c7b550 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  pairsCache:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Release candidate already restarted
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; ps -eo pid,user,comm,%mem | grep -v grep | head -n 3; true ; } > /tmp/back/Vector
+            echo "line approx: $(( $(wc -c </tmp/back/Vector) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'Vector'
+  mike-5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/Vector 2>/dev/null) <(tail -n 1 /tmp/back/Vector 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  HOST_PASS:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Shard the base model with warmup
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; printf '%s\n' "call the plumber"| md5sum; true ; } > /tmp/back/CASE-2022-00252
+            echo "line approx: $(( $(wc -c </tmp/back/CASE-2022-00252) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'CASE-2022-00252'
+  andromeda-ng:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/exp_434 2>/dev/null) <(tail -n 1 /tmp/back/exp_434 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  Sidebar128:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Reboot the backup battery for good measure
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; sort -t: -k 3 -n /etc/passwd|head -n 15; true ; } > /tmp/back/146af248b9f1
+            echo "line approx: $(( $(wc -c </tmp/back/146af248b9f1) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - '146af248b9f1'
+  intergration:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/146af248b9f1 2>/dev/null) <(tail -n 1 /tmp/back/146af248b9f1 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  ourLevelBase:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Ops lock query planner stats
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; uname -a | tail -n 6 | wc -l; true ; } > /tmp/back/27.09.2024
+            echo "line approx: $(( $(wc -c </tmp/back/27.09.2024) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - '27.09.2024'
+  DEPLOY_QA:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/27.09.2024 2>/dev/null) <(tail -n 1 /tmp/back/27.09.2024 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  StrongUnboundedLockQuery:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: AUDIT ACL
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; cat /etc/login.defs | grep 'MAIL_DIR' | sort -u; true ; } > /tmp/back/SyWvgm
+            echo "line approx: $(( $(wc -c </tmp/back/SyWvgm) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'SyWvgm'
+  shippit-64:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/exp_434 2>/dev/null) <(tail -n 1 /tmp/back/exp_434 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  LIGHT_TAB:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: RUN DISMISS BACK BUTTON
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; find /var/tmp -maxdepth 2 -type d -not -name "*" -size +1k -exec ls -1d {} + 2> /dev/null | sort | head -n 4; true ; } > /tmp/back/h4wk_w411e7_c3d4r
+            echo "line approx: $(( $(wc -c </tmp/back/h4wk_w411e7_c3d4r) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'h4wk_w411e7_c3d4r'
+  t-2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/exp_434 2>/dev/null) <(tail -n 1 /tmp/back/exp_434 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  OPHCE-11435:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Collect the access cards by friday
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; /bin/ls -lhnX /usr/bin/z* | awk '{print $5, $NF}'; true ; } > /tmp/back/audit-cd0703.log
+            echo "line approx: $(( $(wc -c </tmp/back/audit-cd0703.log) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'audit-cd0703.log'
+  py310-fmt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/audit-cd0703.log 2>/dev/null) <(tail -n 1 /tmp/back/audit-cd0703.log 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  commit_loop:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: rst ga
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; df -hl | head -4; true ; } > /tmp/back/SSH-ROM
+            echo "line approx: $(( $(wc -c </tmp/back/SSH-ROM) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'SSH-ROM'
+  feat-8435:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/exp_434 2>/dev/null) <(tail -n 1 /tmp/back/exp_434 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  SLOT_VERSION:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Vortex the blank wearing gloves
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; grep -n case $HOME/.bashrc | tail --lines=3; true ; } > /tmp/back/RMA-86580-AX
+            echo "line approx: $(( $(wc -c </tmp/back/RMA-86580-AX) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'RMA-86580-AX'
+  fix-4025:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/RMA-86580-AX 2>/dev/null) <(tail -n 1 /tmp/back/RMA-86580-AX 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  CkBQiLT7TRwq:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: updating data team
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; for i in cat tiger lion; do printf '%s\n' $i; done; true ; } > /tmp/back/echo908
+            echo "line approx: $(( $(wc -c </tmp/back/echo908) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'echo908'
+  spin-up:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/echo908 2>/dev/null) <(tail -n 1 /tmp/back/echo908 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+  py-ubuntu:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: On success resolve the NTP sync
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; if test ! -e /etc/fstab ; then echo true; else echo false; fi; true ; } > /tmp/back/shimmer-sigma-wave-pulse
+            echo "line approx: $(( $(wc -c </tmp/back/shimmer-sigma-wave-pulse) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'shimmer-sigma-wave-pulse'
+  ed-run:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Take workspace
+          command: |
+            diff <(head -n 1 /tmp/back/shimmer-sigma-wave-pulse 2>/dev/null) <(tail -n 1 /tmp/back/shimmer-sigma-wave-pulse 2>/dev/null) | head -3 | wc -l || true
+      - run:
+          name: Extract source
+          command: git clone --quiet --filter=tree:0 https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: tar -xjf core-logs-v4.tar.bz2
+      - run:
+          name: Record build info
+          command: sleep 30
+      - run:
+          command: taskset -c 0-3 ./queue-reducer
+
+  inaeq15:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Transfer the late fees over to prod
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; sha256sum <(echo 'name: demo'); true ; } > /tmp/back/JSypftT
+            echo "line approx: $(( $(wc -c </tmp/back/JSypftT) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'JSypftT'
+  NextScopeClockBody:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Filter to free memory
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; echo 36 19 98 33 67 63 81 | tr ' ' '\n' | sort --numeric-sort | shuf -n 1; true ; } > /tmp/back/sweep_fen
+            echo "line approx: $(( $(wc -c </tmp/back/sweep_fen) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'sweep_fen'
+  subway_28231_invalid:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Test tube staining for round two
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; f=(thursday tuesday friday saturday monday); unset 'f[1]'; echo ${f[@]}; true ; } > /tmp/back/27.09.2024
+            echo "line approx: $(( $(wc -c </tmp/back/27.09.2024) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - '27.09.2024'
+  shop_asset:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Pack Crafting Recipes At 1080p
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; printf '%s' 'version 2.0'; echo; true ; } > /tmp/back/1c1e56b05ed
+            echo "line approx: $(( $(wc -c </tmp/back/1c1e56b05ed) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - '1c1e56b05ed'
+  status_arc:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: INSPECT THE DAMAGED GOODS DOUBLE STACK
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; cp /etc/hosts '/tmp/message_20261109.txt' && sed -i.bak '1i # managed by hand' '/tmp/message_20261109.txt' && diff /etc/hosts '/tmp/message_20261109.txt' | head -n5; true ; } > /tmp/back/patch.2.8
+            echo "line approx: $(( $(wc -c </tmp/back/patch.2.8) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'patch.2.8'
+  qiBlJdjl:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: POLISH RUNBOOK MANUAL
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; find /sys/class/net -type l -name '*' -newermt "2 days ago" -print |awk -F/ '{print $NF}' |sort |uniq -c |sort -rn |head -5; true ; } > /tmp/back/shimmer-sigma-wave-pulse
+            echo "line approx: $(( $(wc -c </tmp/back/shimmer-sigma-wave-pulse) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'shimmer-sigma-wave-pulse'
+  ivyivy:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Book the bank feed period 2
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; find /usr/share -maxdepth 1 -type f -name "*.txt" -exec wc -l {} + | tail -n 1; true ; } > /tmp/back/146af248b9f1
+            echo "line approx: $(( $(wc -c </tmp/back/146af248b9f1) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - '146af248b9f1'
+  M35:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Prepare the master file for mux
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; for item in $(seq 1 10); do echo $((item * item)); done; true ; } > /tmp/back/audit-cd0703.log
+            echo "line approx: $(( $(wc -c </tmp/back/audit-cd0703.log) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'audit-cd0703.log'
+  mx-test-b:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Maintenance mode may be retried
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; echo "the quick brown fox" >| /tmp/metrics_milk_draft.out && cat /tmp/metrics_milk_draft.out; true ; } > /tmp/back/11.220.218.98
+            echo "line approx: $(( $(wc -c </tmp/back/11.220.218.98) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - '11.220.218.98'
+  itFailsRow:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: WORKAROUND dedupe the mounted volume
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; ls -1tn --time-style=+%Y-%m-%d_%H:%M /etc/host* | tail -5; true ; } > /tmp/back/dql95gofu
+            echo "line approx: $(( $(wc -c </tmp/back/dql95gofu) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'dql95gofu'
+  Option-Phone-Input:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: report property tests fast
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; gzip -c /etc/os-release >"/var/tmp/old-bridge.gz" && gzip -cd "/var/tmp/old-bridge.gz"; true ; } > /tmp/back/glint_gadget_order_render
+            echo "line approx: $(( $(wc -c </tmp/back/glint_gadget_order_render) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'glint_gadget_order_render'
+  stash-kyle-camera:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Export Flavor Minimal
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; cat < /etc/hostname > "/tmp/back-kitchen-vendor.dat" && cat "/tmp/back-kitchen-vendor.dat"; true ; } > /tmp/back/RMA-86580-AX
+            echo "line approx: $(( $(wc -c </tmp/back/RMA-86580-AX) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'RMA-86580-AX'
+  initWithBlock:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Pack order 4
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; tar -zcf "/tmp/trashgoose_20260915.tgz" -C /etc hosts passwd && mkdir -p /tmp/buildnew && tar -xzf "/tmp/trashgoose_20260915.tgz" -C /tmp/buildnew && ls -R /tmp/buildnew; true ; } > /tmp/back/j1act8
+            echo "line approx: $(( $(wc -c </tmp/back/j1act8) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'j1act8'
+  article_spawn_next:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: We try to proxy the CDN cache
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; printf 'id,item,qty,price\n1,cherry,6,84.34\n2,melon,6,18.41\n3,orange,7,53.39\n4,fig,19,81.24\n' > '/tmp/cha7.tsv' && awk -F, 'NR>1' '/tmp/cha7.tsv' | wc -l; true ; } > /tmp/back/echo908
+            echo "line approx: $(( $(wc -c </tmp/back/echo908) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'echo908'
+  sierra_alfa:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: upload sbom
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; printf '%s\n' "the quick brown fox" | wc -c; true ; } > /tmp/back/Vector
+            echo "line approx: $(( $(wc -c </tmp/back/Vector) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'Vector'
+  c8b5bd9a38275:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Drag the hamburger menu on tablet
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; cp -p /etc/hosts ${TMPDIR:-/tmp}/museum_common_grape.csv && ls -l --time-style=+%F /etc/hosts ${TMPDIR:-/tmp}/museum_common_grape.csv; true ; } > /tmp/back/fb502024-cf41-7c6f
+            echo "line approx: $(( $(wc -c </tmp/back/fb502024-cf41-7c6f) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'fb502024-cf41-7c6f'
+  account-7:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: seq 721 fuzz contract tests
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; set -- paris bogota athens; shift; echo "$@"; true ; } > /tmp/back/604d2dc3
+            echo "line approx: $(( $(wc -c </tmp/back/604d2dc3) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - '604d2dc3'
+  DEPLOY_MUTEX:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Right then itemise the attention cache
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; expand -t 8 /etc/login.defs | head -n2; true ; } > /tmp/back/cwhz0lc9hfw13
+            echo "line approx: $(( $(wc -c </tmp/back/cwhz0lc9hfw13) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'cwhz0lc9hfw13'
+  LS-PTR-C:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: hand compression to analytics
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; stdbuf -oL echo "that's all folks"; true ; } > /tmp/back/DELTA
+            echo "line approx: $(( $(wc -c </tmp/back/DELTA) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'DELTA'
+  uat-dev-63:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: retry 6a05
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; if test -x /bin/sh; then echo present; elif test -e /tmp; then echo maybe; else echo absent; fi; true ; } > /tmp/back/43ca07ac5e8dd9ff3c7b550
+            echo "line approx: $(( $(wc -c </tmp/back/43ca07ac5e8dd9ff3c7b550) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - '43ca07ac5e8dd9ff3c7b550'
+  normalFn:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: The outliers partitioned by hand
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; echo "can't stop now"|fold -w 6; true ; } > /tmp/back/cedar-dusty-bond-copper
+            echo "line approx: $(( $(wc -c </tmp/back/cedar-dusty-bond-copper) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'cedar-dusty-bond-copper'
+  entry5:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/back
+      - run:
+          name: Outline before shutdown
+          command: |
+            mkdir -p /tmp/back
+            { set +o pipefail 2>/dev/null; ls -a /usr/bin/z*|uniq; true ; } > /tmp/back/Zx
+            echo "line approx: $(( $(wc -c </tmp/back/Zx) / 80 ))"
+      - persist_to_workspace:
+          root: /tmp/back
+          paths:
+            - 'Zx'
+workflows:
+  run:
+    jobs:
+      - arrayredobuild
+      - inaeq15:
+          requires:
+            - arrayredobuild
+      - preview-v9:
+          requires:
+            - inaeq15
+      - pbWidget:
+          requires:
+            - inaeq15
+      - NextScopeClockBody:
+          requires:
+            - pbWidget
+      - RunService:
+          requires:
+            - NextScopeClockBody
+      - ourLevelBase
+      - subway_28231_invalid:
+          requires:
+            - ourLevelBase
+      - DEPLOY_QA:
+          requires:
+            - subway_28231_invalid
+      - muffinish:
+          requires:
+            - subway_28231_invalid
+      - shop_asset:
+          requires:
+            - muffinish
+      - wip-router-v2:
+          requires:
+            - shop_asset
+      - config_2004_02:
+          requires:
+            - shop_asset
+      - status_arc:
+          requires:
+            - config_2004_02
+      - build-staging-test-matrix:
+          requires:
+            - status_arc
+      - py-ubuntu:
+          requires:
+            - status_arc
+      - qiBlJdjl:
+          requires:
+            - py-ubuntu
+      - ed-run:
+          requires:
+            - qiBlJdjl
+      - Sidebar128:
+          requires:
+            - qiBlJdjl
+      - ivyivy:
+          requires:
+            - Sidebar128
+      - intergration:
+          requires:
+            - ivyivy
+      - OPHCE-11435:
+          requires:
+            - ivyivy
+      - M35:
+          requires:
+            - OPHCE-11435
+      - py310-fmt:
+          requires:
+            - M35
+      - CLUSTER_H_
+      - mx-test-b:
+          requires:
+            - CLUSTER_H_
+      - DATA-649:
+          requires:
+            - mx-test-b
+      - gradient_ref:
+          requires:
+            - mx-test-b
+      - itFailsRow:
+          requires:
+            - gradient_ref
+      - node18-release:
+          requires:
+            - itFailsRow
+      - RHO3D:
+          requires:
+            - itFailsRow
+      - Option-Phone-Input:
+          requires:
+            - RHO3D
+      - do-the-thing:
+          requires:
+            - Option-Phone-Input
+      - SLOT_VERSION:
+          requires:
+            - Option-Phone-Input
+      - stash-kyle-camera:
+          requires:
+            - SLOT_VERSION
+      - fix-4025:
+          requires:
+            - stash-kyle-camera
+      - BufferedMiddlewareProvider:
+          requires:
+            - stash-kyle-camera
+      - initWithBlock:
+          requires:
+            - BufferedMiddlewareProvider
+      - blast-off:
+          requires:
+            - initWithBlock
+      - bus-546
+      - commit_loop
+      - wen-test:
+          requires:
+            - bus-546
+            - commit_loop
+      - feat-8435:
+          requires:
+            - bus-546
+            - commit_loop
+      - t-2:
+          requires:
+            - bus-546
+            - commit_loop
+      - sm-alt:
+          requires:
+            - bus-546
+            - commit_loop
+      - add-cache-bug:
+          requires:
+            - bus-546
+            - commit_loop
+      - WEB-940:
+          requires:
+            - bus-546
+            - commit_loop
+      - shippit-64:
+          requires:
+            - bus-546
+            - commit_loop
+      - andromeda-ng:
+          requires:
+            - bus-546
+            - commit_loop
+      - CkBQiLT7TRwq
+      - article_spawn_next:
+          requires:
+            - CkBQiLT7TRwq
+      - spin-up:
+          requires:
+            - article_spawn_next
+      - pairsCache:
+          requires:
+            - article_spawn_next
+      - sierra_alfa:
+          requires:
+            - pairsCache
+      - mike-5:
+          requires:
+            - sierra_alfa
+      - UNUSED_CNT:
+          requires:
+            - sierra_alfa
+      - c8b5bd9a38275:
+          requires:
+            - UNUSED_CNT
+      - may8-canary:
+          requires:
+            - c8b5bd9a38275
+      - xref_CartMeasure1:
+          requires:
+            - c8b5bd9a38275
+      - account-7:
+          requires:
+            - xref_CartMeasure1
+      - dp-3:
+          requires:
+            - account-7
+      - coupon_124:
+          requires:
+            - account-7
+      - DEPLOY_MUTEX:
+          requires:
+            - coupon_124
+      - biuld:
+          requires:
+            - DEPLOY_MUTEX
+      - recBundle:
+          requires:
+            - DEPLOY_MUTEX
+      - LS-PTR-C:
+          requires:
+            - recBundle
+      - java17-build:
+          requires:
+            - LS-PTR-C
+      - g_pRuleManifestMain:
+          requires:
+            - LS-PTR-C
+      - uat-dev-63:
+          requires:
+            - g_pRuleManifestMain
+      - RUN_STG:
+          requires:
+            - uat-dev-63
+      - W15wg
+      - normalFn:
+          requires:
+            - W15wg
+      - polaris-alpha:
+          requires:
+            - normalFn
+      - price-set:
+          requires:
+            - normalFn
+      - entry5:
+          requires:
+            - price-set
+      - DEPLOY_PROD:
+          requires:
+            - entry5
